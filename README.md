@@ -1,5 +1,5 @@
 # NAYtrading.Trader #
-This is the broker connector of [naytrading.com](http://naytrading.com).
+This is the broker connector of [N.A.Y.trading](https://github.com/chrwoizi/naytrading).
 
 ## :telephone: Forwarding the simulated trades to a broker ##
 
@@ -41,9 +41,8 @@ root@host:~$ su naytrading-trader
 naytrading-trader@host:/root$ cd ~
 
 # setup naytrading
-naytrading-trader@host:~$ git clone https://github.com/chrwoizi/naytrading-trader.git
-naytrading-trader@host:~$ cd naytrading-trader
-naytrading-trader@host:~/naytrading-trader$ cd NAYtrading.Trader
+naytrading-trader@host:~$ git clone https://github.com/chrwoizi/naytrading-trader.git naytrading-trader
+naytrading-trader@host:~$ cd naytrading-trader/NAYtrading.Trader
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ npm install
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ cd app/config
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader/app/config$ cp config.mandatory.json config.json
