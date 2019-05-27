@@ -79,7 +79,7 @@ exports.getTrades = async function (time, jar) {
 exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jar) {
     console.log("Setting weight " + type + " of instrument " + isinOrWkn + " to " + weight + " at naytrading...");
     try {
-        var response = post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, true, jar);
+        var response = await post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, {}, jar);
         if (response && JSON.stringify(response) == "{}") {
             console.log("Weight is set.");
         }
