@@ -4,30 +4,13 @@ var request = require('request');
 var dateFormat = require('dateformat');
 var config = require('../config/envconfig');
 
-async function postForm(url, form) {
+async function get(url, jwt) {
     return new Promise((resolve, reject) => {
-        var jar = request.jar()
-        request.post({ url: url, form: form, json: true, jar: jar, proxy: config.proxy, followAllRedirects: true }, (err, response, body) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            if (!response) {
-                reject(new Error("unknown error"));
-                return;
-            }
-            if (response.statusCode != 200 && response.statusCode != 302) {
-                reject(new Error("HTTP " + response.statusCode));
-                return;
-            }
-            resolve({ jar: jar, body: body, statusCode: response.statusCode });
-        });
-    });
-}
-
-async function get(url, jar) {
-    return new Promise((resolve, reject) => {
-        request({ url: url, json: true, jar: jar, proxy: config.proxy }, (err, response, body) => {
+        var headers = {}
+        if (jwt) {
+            headers = { 'Authorization': 'Bearer ' + jwt };
+        }
+        request({ url: url, json: true, proxy: config.proxy, headers: headers }, (err, response, body) => {
             if (err) {
                 reject(err);
             }
@@ -42,9 +25,13 @@ async function get(url, jar) {
     });
 }
 
-async function post(url, data, jar) {
+async function post(url, data, jwt) {
     return new Promise((resolve, reject) => {
-        request.post({ url: url, json: true, body: data, jar: jar, proxy: config.proxy, followAllRedirects: true }, (err, response, body) => {
+        var headers = {}
+        if (jwt) {
+            headers = { 'Authorization': 'Bearer ' + jwt };
+        }
+        request.post({ url: url, json: true, body: data, proxy: config.proxy, followAllRedirects: true, headers: headers }, (err, response, body) => {
             if (err) {
                 reject(err);
             }
@@ -60,26 +47,23 @@ async function post(url, data, jar) {
 }
 
 exports.login = async function (userName, password) {
-    var response = await postForm(config.naytrading_url + "/signin", { email: userName, password: password });
-    var sessionCookies = response.jar.getCookies(config.naytrading_url).filter(x => x.key == "session");
-    if (sessionCookies.length && sessionCookies[0].value && sessionCookies[0].value.length) {
-        var jar = response.jar;
-        jar.naytradingUser = userName;
-        return jar;
+    var response = await post(config.naytrading_url + "/api/login", { email: userName, password: password });
+    if (response && response.token && response.token.length) {
+        return response.token;
     }
     else {
         throw new Error("Error while signing in: " + response.statusCode);
     }
 };
 
-exports.getTrades = async function (time, jar) {
-    return get(config.naytrading_url + "/api/export/user/trades/" + dateFormat(time, 'yyyymmdd'), jar);
+exports.getTrades = async function (time, jwt) {
+    return get(config.naytrading_url + "/api/export/user/trades/" + dateFormat(time, 'yyyymmdd'), jwt);
 };
 
-exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jar) {
+exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jwt) {
     console.log("Setting weight " + type + " of instrument " + isinOrWkn + " to " + weight + " at naytrading...");
     try {
-        var response = await post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, {}, jar);
+        var response = await post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, {}, jwt);
         if (response && JSON.stringify(response) == "{}") {
             console.log("Weight is set.");
         }
@@ -93,9 +77,9 @@ exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jar) {
     }
 };
 
-exports.getOpenSuggestions = async function (jar) {
+exports.getOpenSuggestions = async function (jwt) {
     try {
-        var response = await get(config.naytrading_url + "/api/trader/suggestions", jar);
+        var response = await get(config.naytrading_url + "/api/trader/suggestions", jwt);
         if (response && response.length >= 0) {
             return response;
         }
@@ -109,10 +93,10 @@ exports.getOpenSuggestions = async function (jar) {
     }
 };
 
-exports.hasNewerSuggestion = async function (suggestionId, jar) {
+exports.hasNewerSuggestion = async function (suggestionId, jwt) {
     try {
-        var response = await get(config.naytrading_url + "/api/trader/suggestion/" + suggestionId + "/newer", jar);
-        if (response && typeof(response.hasNewerSuggestion) !== 'undefined') {
+        var response = await get(config.naytrading_url + "/api/trader/suggestion/" + suggestionId + "/newer", jwt);
+        if (response && typeof (response.hasNewerSuggestion) !== 'undefined') {
             return response.hasNewerSuggestion;
         }
         else {
@@ -125,9 +109,9 @@ exports.hasNewerSuggestion = async function (suggestionId, jar) {
     }
 };
 
-exports.saveTradeLog = async function (log, jar) {
+exports.saveTradeLog = async function (log, jwt) {
     try {
-        var response = await post(config.naytrading_url + "/api/trader/log", log, jar);
+        var response = await post(config.naytrading_url + "/api/trader/log", log, jwt);
         if (response && response.ID >= 0) {
             return response.ID;
         }

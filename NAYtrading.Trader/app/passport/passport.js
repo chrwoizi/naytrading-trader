@@ -15,15 +15,13 @@ module.exports = function (passport) {
 
         function (req, email, password, done) {
 
-            naytradingClient.login(email, password).then(function (jar) {
+            naytradingClient.login(email, password).then(function (jwt) {
 
-                if (!jar.naytradingUser) {
-
+                if (!jwt) {
                     return done(null, false, {
                         hasError: true,
                         message: 'This combination of email and password does not exist.'
                     });
-
                 }
 
                 naytradingStore.setPassword(email, password);

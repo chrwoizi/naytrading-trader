@@ -104,14 +104,14 @@ async function prepareSell(driver, suggestion, log, logger) {
     }
 }
 
-async function processSuggestion(driver, user, suggestion, availableFunds, jar) {
+async function processSuggestion(driver, user, suggestion, availableFunds, jwt) {
     var log = {
         Snapshot_ID: suggestion.ID,
         Status: "Processing",
         Time: new Date()
     };
     try {
-        log.ID = await naytradingClient.saveTradeLog(log, jar);
+        log.ID = await naytradingClient.saveTradeLog(log, jwt);
     }
     catch (error) {
         throw new CancelOrderTemporaryError("Could not set processing status: " + error.message);
@@ -126,7 +126,7 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jar) 
             throw new CancelOrderFatalError("ISIN or WKN not found for suggestion " + suggestion.ID);
         }
 
-        var hasNewerSuggestion = await naytradingClient.hasNewerSuggestion(suggestion.ID, jar);
+        var hasNewerSuggestion = await naytradingClient.hasNewerSuggestion(suggestion.ID, jwt);
         if (hasNewerSuggestion) {
             throw new CancelOrderFatalError("There is a newer suggestion for the same instrument");
         }
@@ -194,7 +194,7 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jar) 
             availableFunds -= config.order_fee;
 
             logger.log("Notifying naytrading...");
-            await naytradingClient.setInstrumentWeight(suggestion.Isin || suggestion.Wkn, "Trader-bought", 1, jar);
+            await naytradingClient.setInstrumentWeight(suggestion.Isin || suggestion.Wkn, "Trader-bought", 1, jwt);
             logger.log("Naytrading was notified.");
         }
         else if (log.Action == broker.getActionSell(config.broker_name)) {
@@ -204,7 +204,7 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jar) 
             availableFunds -= config.order_fee;
 
             logger.log("Notifying naytrading...");
-            await naytradingClient.setInstrumentWeight(suggestion.Isin || suggestion.Wkn, "Trader-bought", 0, jar);
+            await naytradingClient.setInstrumentWeight(suggestion.Isin || suggestion.Wkn, "Trader-bought", 0, jwt);
             logger.log("Naytrading was notified.");
         }
     }
@@ -232,7 +232,7 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jar) 
     finally {
         log.Message = logger.History;
         try {
-            await naytradingClient.saveTradeLog(log, jar);
+            await naytradingClient.saveTradeLog(log, jwt);
         }
         catch (error) {
             logger.log("Could not set processing status: " + error.message);
@@ -246,10 +246,10 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jar) 
 async function processSuggestions(user) {
     if (naytradingStore.isPasswordSet(user)) {
 
-        var jar = null;
+        var jwt = null;
         try {
             writeToLog("Logging in at naytrading with user " + user + "...");
-            jar = await naytradingStore.login(async (password) => await naytradingClient.login(user, password), user);
+            jwt = await naytradingStore.login(async (password) => await naytradingClient.login(user, password), user);
             writeToLog("Logged in at naytrading.");
         }
         catch (e) {
@@ -261,7 +261,7 @@ async function processSuggestions(user) {
         var suggestions = [];
         try {
             writeToLog("Loading suggestions from naytrading for user " + user + "...");
-            suggestions = await naytradingClient.getOpenSuggestions(jar);
+            suggestions = await naytradingClient.getOpenSuggestions(jwt);
             writeToLog("Received " + suggestions.length + " suggestions.");
         }
         catch (e) {
@@ -311,7 +311,7 @@ async function processSuggestions(user) {
                                                 break;
                                             }
                                             
-                                            availableFunds = await processSuggestion(driver, user, suggestion, availableFunds, jar);
+                                            availableFunds = await processSuggestion(driver, user, suggestion, availableFunds, jwt);
                                             
                                             if (!tanStore.isTanListSet(user)) {
                                                 writeToLog("TAN list was invalidated");
