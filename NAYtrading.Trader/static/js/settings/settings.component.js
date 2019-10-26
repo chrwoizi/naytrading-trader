@@ -6,7 +6,7 @@ angular.
         templateUrl: '/static/html/settings.template.html',
         controller: ['GetUserStatusService', 'SetTanListService', 'UnlockTanListService', 'UnlockBrokerService', '$routeParams', '$scope',
             function StatsController(GetUserStatusService, SetTanListService, UnlockTanListService, UnlockBrokerService, $routeParams, $scope) {
-                var self = this;
+                const self = this;
 
                 function handleError(error) {
                     if (typeof (error.data) !== 'undefined' && error.data != null) {
@@ -47,10 +47,10 @@ angular.
                     self.tanListRows = status.rows;
                     self.tanListColumns = status.columns;
 
-                    for (var r = 0; r < self.tanListRows.length; ++r) {
-                        var row = self.tanListRows[r];
-                        for (var c = 0; c < self.tanListColumns.length; ++c) {
-                            var col = self.tanListColumns[c];
+                    for (let r = 0; r < self.tanListRows.length; ++r) {
+                        const row = self.tanListRows[r];
+                        for (let c = 0; c < self.tanListColumns.length; ++c) {
+                            const col = self.tanListColumns[c];
                             self.tans["" + row + col] = "";
                         }
                     }
@@ -65,11 +65,11 @@ angular.
 
                 self.saveTanList = function () {
 
-                    var tanList = "";
-                    for (var r = 0; r < self.tanListRows.length; ++r) {
-                        var row = self.tanListRows[r];
-                        for (var c = 0; c < self.tanListColumns.length; ++c) {
-                            var col = self.tanListColumns[c];
+                    let tanList = "";
+                    for (let r = 0; r < self.tanListRows.length; ++r) {
+                        const row = self.tanListRows[r];
+                        for (let c = 0; c < self.tanListColumns.length; ++c) {
+                            const col = self.tanListColumns[c];
                             if (r > 0 || c > 0) {
                                 tanList += ",";
                             }

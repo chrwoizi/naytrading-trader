@@ -1,9 +1,9 @@
-var naytradingClient = require('../clients/naytrading_client');
-var naytradingStore = require('../stores/naytrading_store');
+const naytradingClient = require('../clients/naytrading_client');
+const naytradingStore = require('../stores/naytrading_store');
 
 module.exports = function (passport) {
 
-    var LocalStrategy = require('passport-local').Strategy;
+    const LocalStrategy = require('passport-local').Strategy;
 
     passport.use('local-signin', new LocalStrategy(
         {
@@ -26,7 +26,7 @@ module.exports = function (passport) {
 
                 naytradingStore.setPassword(email, password);
 
-                var userinfo = {
+                const userinfo = {
                     email: email
                 };
                 return done(null, userinfo);

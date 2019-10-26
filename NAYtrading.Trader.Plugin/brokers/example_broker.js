@@ -1,11 +1,9 @@
-var exports = module.exports = {}
-
-var config = require('../config/envconfig');
-var browser = require(config.naytrading_trader + "/app/clients/browser");
-var errors = require(config.naytrading_trader + "/app/clients/errors");
-var FatalError = errors.FatalError;
-var CancelOrderFatalError = errors.CancelOrderFatalError;
-var CancelOrderTemporaryError = errors.CancelOrderTemporaryError;
+const config = require('../config/envconfig');
+const browser = require(config.naytrading_trader + "/app/clients/browser");
+const errors = require(config.naytrading_trader + "/app/clients/errors");
+const FatalError = errors.FatalError;
+const CancelOrderFatalError = errors.CancelOrderFatalError;
+const CancelOrderTemporaryError = errors.CancelOrderTemporaryError;
 
 exports.action_buy = "buy";
 exports.action_sell = "sell";
@@ -27,7 +25,7 @@ exports.getPrice = async function (driver, isinOrWkn, action) {
 };
 
 exports.getTanChallenge = async function (driver, quantity, action) {
-    var result = {};
+    const result = {};
     result.CustomProperty1 = 1;
     result.CustomProperty2 = 7;
     result.CustomProperty3 = 4;

@@ -1,12 +1,10 @@
-var exports = module.exports = {}
 
-var config = require('../config/envconfig');
-var tanStore = require('../stores/tan_store');
-var brokerStore = require('../stores/broker_store');
-var Cryptr = require('cryptr');
-var mainJob = require('../jobs/main');
-var tanStore = require('../stores/tan_store');
-var dateFormat = require('dateformat');
+const config = require('../config/envconfig');
+const tanStore = require('../stores/tan_store');
+const brokerStore = require('../stores/broker_store');
+const Cryptr = require('cryptr');
+const mainJob = require('../jobs/main');
+const dateFormat = require('dateformat');
 
 function return500(res, e) {
     res.status(500);
@@ -18,7 +16,7 @@ exports.getUserStatus = async function (req, res) {
     try {
         if (req.isAuthenticated()) {
 
-            var result = {};
+            const result = {};
 
             result.isRunning = mainJob.isRunning;
             result.nextRun = dateFormat(new Date(mainJob.lastRun.getTime() + 1000 * config.job_main_interval_seconds), 'HH:MM:ss');
@@ -66,7 +64,7 @@ exports.setTanList = async function (req, res) {
                 throw new Error("password must be at least 8 characters");
             }
 
-            var cipher = new Cryptr(req.body.password).encrypt(req.body.tanList);
+            const cipher = new Cryptr(req.body.password).encrypt(req.body.tanList);
             await tanStore.setEncryptedTanList(req.user.email, cipher);
 
             await tanStore.setTanList(req.user.email, req.body.tanList);
@@ -129,7 +127,7 @@ exports.runJob = async function (req, res) {
     try {
         if (req.isAuthenticated() && req.user.email == config.admin_user) {
 
-            result = {};
+            let result = {};
             result.started = mainJob.runManually();
 
             res.status(200);
@@ -150,7 +148,7 @@ exports.cancelJob = async function (req, res) {
     try {
         if (req.isAuthenticated() && req.user.email == config.admin_user) {
 
-            result = {};
+            let result = {};
 
             if (mainJob.isRunning) {
                 mainJob.cancel = true;
@@ -178,7 +176,7 @@ exports.suspendJob = async function (req, res) {
     try {
         if (req.isAuthenticated() && req.user.email == config.admin_user) {
 
-            result = {};
+            let result = {};
 
             mainJob.isSuspended = true;
             result.suspended = true;
@@ -209,7 +207,7 @@ exports.continueJob = async function (req, res) {
     try {
         if (req.isAuthenticated() && req.user.email == config.admin_user) {
 
-            result = {};
+            let result = {};
 
             mainJob.isSuspended = false;
             result.suspended = false;
@@ -232,7 +230,7 @@ exports.getJobStatus = async function (req, res) {
     try {
         if (req.isAuthenticated() && req.user.email == config.admin_user) {
 
-            result = {};
+            let result = {};
 
             result.isRunning = mainJob.isRunning;
             result.isSuspended = mainJob.isSuspended;

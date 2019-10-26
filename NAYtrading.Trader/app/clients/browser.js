@@ -1,9 +1,7 @@
-var exports = module.exports = {}
-
-var webdriver = require('selenium-webdriver');
-var chrome = require('selenium-webdriver/chrome');
-var fs = require('fs');
-var config = require('../config/envconfig');
+const webdriver = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const fs = require('fs');
+const config = require('../config/envconfig');
 
 async function sleep(ms) {
     return new Promise((resolve, reject) => {
@@ -28,10 +26,10 @@ exports.createDriver = async function () {
     const width = 1920;
     const height = 1080;
 
-    var service = new chrome.ServiceBuilder(config.chrome_driver).build();
+    const service = new chrome.ServiceBuilder(config.chrome_driver).build();
     chrome.setDefaultService(service);
 
-    var options = new chrome.Options();
+    let options = new chrome.Options();
     if (config.chrome_headless) {
         options = options.headless();
     }
@@ -57,13 +55,13 @@ exports.createDriver = async function () {
 
 exports.waitForId = async function (driver, id, timeoutSeconds, predicate) {
 
-    for (var i = 0; i < timeoutSeconds * 10; i++) {
+    for (let i = 0; i < timeoutSeconds * 10; i++) {
         await sleep(100);
 
         try {
-            var elements = await driver.findElements(webdriver.By.id(id));
+            const elements = await driver.findElements(webdriver.By.id(id));
             if (elements && elements.length) {
-                for (var element of elements) {
+                for (const element of elements) {
                     if (await predicate(element)) {
                         return element;
                     }
@@ -79,13 +77,13 @@ exports.waitForId = async function (driver, id, timeoutSeconds, predicate) {
 
 exports.waitForXpath = async function (driver, xpath, timeoutSeconds, predicate) {
 
-    for (var i = 0; i < timeoutSeconds * 10; i++) {
+    for (let i = 0; i < timeoutSeconds * 10; i++) {
         await sleep(100);
 
         try {
-            var elements = await driver.findElements(webdriver.By.xpath(xpath));
+            const elements = await driver.findElements(webdriver.By.xpath(xpath));
             if (elements && elements.length) {
-                for (var element of elements) {
+                for (const element of elements) {
                     if (await predicate(element)) {
                         return element;
                     }
@@ -100,9 +98,9 @@ exports.waitForXpath = async function (driver, xpath, timeoutSeconds, predicate)
 };
 
 async function checkPreviousAction(driver) {
-    var retries = await driver.findElements(webdriver.By.id("previousActionNotFinishedOverlayFormContainer"));
+    const retries = await driver.findElements(webdriver.By.id("previousActionNotFinishedOverlayFormContainer"));
     if (retries && retries.length) {
-        for (var retry of retries) {
+        for (const retry of retries) {
             if (retry.isDisplayed()) {
                 throw new Error("Previous action was not finished");
             }
@@ -111,9 +109,9 @@ async function checkPreviousAction(driver) {
 }
 
 async function killOverlay(driver) {
-    var overlays = await driver.findElements(webdriver.By.xpath("//div[contains(@class,'ui-widget-overlay')]"));
+    const overlays = await driver.findElements(webdriver.By.xpath("//div[contains(@class,'ui-widget-overlay')]"));
     if (overlays && overlays.length) {
-        for (var overlay of overlays) {
+        for (const overlay of overlays) {
             if (overlay.isDisplayed()) {
                 await driver.executeScript("arguments[0].setAttribute('display','none');", overlay);
             }
@@ -126,7 +124,7 @@ exports.saveScreenshot = async function (driver) {
         if (!driver || !driver.takeScreenshot) {
             throw new Error("Could not save screenshot: " + driver + "\n" + JSON.stringify(driver));
         }
-        var base64Png = await driver.takeScreenshot();
+        const base64Png = await driver.takeScreenshot();
         if (base64Png) {
             await writeFile(new Date().getTime() + ".png", base64Png);
         }

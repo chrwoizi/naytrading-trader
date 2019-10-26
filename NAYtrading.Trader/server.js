@@ -1,17 +1,17 @@
-var express = require('express');
-var https = require('https');
-var http = require('http');
-var fs = require('fs');
-var app = express();
-var passport = require('passport');
-var session = require('cookie-session');
-var bodyParser = require('body-parser');
-var env = require('dotenv').load();
-var exphbs = require('express-handlebars');
+const express = require('express');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
+const app = express();
+const passport = require('passport');
+const session = require('cookie-session');
+const bodyParser = require('body-parser');
+const env = require('dotenv').load();
+const exphbs = require('express-handlebars');
 
-var config = require('./app/config/envconfig');
+const config = require('./app/config/envconfig');
 
-var mainJob = require('./app/jobs/main');
+const mainJob = require('./app/jobs/main');
 
 (async () => {
 
@@ -61,9 +61,9 @@ var mainJob = require('./app/jobs/main');
 
 
         // Routes
-        var authRoute = require('./app/routes/auth_routes.js')(app, passport);
-        var viewsRoute = require('./app/routes/views_routes.js')(app, passport);
-        var apiRoute = require('./app/routes/api_routes.js')(app, passport);
+        const authRoute = require('./app/routes/auth_routes.js')(app, passport);
+        const viewsRoute = require('./app/routes/views_routes.js')(app, passport);
+        const apiRoute = require('./app/routes/api_routes.js')(app, passport);
 
         // load passport strategies
         require('./app/passport/passport.js')(passport);
@@ -74,7 +74,7 @@ var mainJob = require('./app/jobs/main');
         });
 
         if (config.https_enabled) {
-            var httpsOptions = {
+            const httpsOptions = {
                 key: fs.readFileSync(config.https_key),
                 cert: fs.readFileSync(config.https_cert),
                 ca: fs.readFileSync(config.https_ca)

@@ -1,12 +1,10 @@
-var exports = module.exports = {}
-
-var request = require('request');
-var dateFormat = require('dateformat');
-var config = require('../config/envconfig');
+const request = require('request');
+const dateFormat = require('dateformat');
+const config = require('../config/envconfig');
 
 async function get(url, jwt) {
     return new Promise((resolve, reject) => {
-        var headers = {}
+        let headers = {}
         if (jwt) {
             headers = { 'Authorization': 'Bearer ' + jwt };
         }
@@ -27,7 +25,7 @@ async function get(url, jwt) {
 
 async function post(url, data, jwt) {
     return new Promise((resolve, reject) => {
-        var headers = {}
+        let headers = {}
         if (jwt) {
             headers = { 'Authorization': 'Bearer ' + jwt };
         }
@@ -47,7 +45,7 @@ async function post(url, data, jwt) {
 }
 
 exports.login = async function (userName, password) {
-    var response = await post(config.naytrading_url + "/api/login", { email: userName, password: password });
+    const response = await post(config.naytrading_url + "/api/login", { email: userName, password: password });
     if (response && response.token && response.token.length) {
         return response.token;
     }
@@ -63,7 +61,7 @@ exports.getTrades = async function (time, jwt) {
 exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jwt) {
     console.log("Setting weight " + type + " of instrument " + isinOrWkn + " to " + weight + " at naytrading...");
     try {
-        var response = await post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, {}, jwt);
+        const response = await post(config.naytrading_url + "/api/weight/" + isinOrWkn + "/" + type + "/" + weight, {}, jwt);
         if (response && JSON.stringify(response) == "{}") {
             console.log("Weight is set.");
         }
@@ -79,7 +77,7 @@ exports.setInstrumentWeight = async function (isinOrWkn, type, weight, jwt) {
 
 exports.getOpenSuggestions = async function (jwt) {
     try {
-        var response = await get(config.naytrading_url + "/api/trader/suggestions", jwt);
+        const response = await get(config.naytrading_url + "/api/trader/suggestions", jwt);
         if (response && response.length >= 0) {
             return response;
         }
@@ -95,7 +93,7 @@ exports.getOpenSuggestions = async function (jwt) {
 
 exports.hasNewerSuggestion = async function (suggestionId, jwt) {
     try {
-        var response = await get(config.naytrading_url + "/api/trader/suggestion/" + suggestionId + "/newer", jwt);
+        const response = await get(config.naytrading_url + "/api/trader/suggestion/" + suggestionId + "/newer", jwt);
         if (response && typeof (response.hasNewerSuggestion) !== 'undefined') {
             return response.hasNewerSuggestion;
         }
@@ -111,7 +109,7 @@ exports.hasNewerSuggestion = async function (suggestionId, jwt) {
 
 exports.saveTradeLog = async function (log, jwt) {
     try {
-        var response = await post(config.naytrading_url + "/api/trader/log", log, jwt);
+        const response = await post(config.naytrading_url + "/api/trader/log", log, jwt);
         if (response && response.ID >= 0) {
             return response.ID;
         }

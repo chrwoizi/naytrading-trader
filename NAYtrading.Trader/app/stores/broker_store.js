@@ -1,7 +1,5 @@
-var exports = module.exports = {}
-
-var brokerPasswordsByUser = {};
-var brokerUsersByUser = {};
+const brokerPasswordsByUser = {};
+const brokerUsersByUser = {};
 
 exports.getUsers = function() {
     return Object.getOwnPropertyNames(brokerUsersByUser);
@@ -16,7 +14,7 @@ exports.setBrokerUser = function (userName, brokerUser) {
 };
 
 exports.isPasswordSet = function (userName) {
-    var password = brokerPasswordsByUser[userName];
+    const password = brokerPasswordsByUser[userName];
     if (typeof (password) === 'string' && password.length > 0) {
         return true;
     } else {
@@ -25,7 +23,7 @@ exports.isPasswordSet = function (userName) {
 };
 
 exports.isBrokerUserSet = function (userName) {
-    var brokerUser = brokerUsersByUser[userName];
+    const brokerUser = brokerUsersByUser[userName];
     if (typeof (brokerUser) === 'string' && brokerUser.length > 0) {
         return true;
     } else {
@@ -34,12 +32,12 @@ exports.isBrokerUserSet = function (userName) {
 };
 
 exports.login = async function (callback, userName) {
-    var password = brokerPasswordsByUser[userName];
+    const password = brokerPasswordsByUser[userName];
     if (typeof (password) !== 'string' || password.length == 0) {
         throw new Error("broker password is not set for user " + userName);
     }
     
-    var brokerUser = brokerUsersByUser[userName];
+    const brokerUser = brokerUsersByUser[userName];
     if (typeof (brokerUser) !== 'string' || brokerUser.length == 0) {
         throw new Error("broker user is not set for user " + userName);
     }

@@ -1,4 +1,4 @@
-var apiController = require('../controllers/api_controller.js');
+const apiController = require('../controllers/api_controller.js');
 
 module.exports = function (app, passport) {
 

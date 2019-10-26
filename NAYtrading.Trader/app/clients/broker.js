@@ -1,12 +1,10 @@
-var exports = module.exports = {}
+const config = require('../config/envconfig');
 
-var config = require('../config/envconfig');
-
-var brokerNames = Object.keys(config.brokers);
-var brokers = {};
-for (var i = 0; i < brokerNames.length; ++i) {
-    var brokerName = brokerNames[i];
-    var broker = require(config.brokers[brokerName]);
+const brokerNames = Object.keys(config.brokers);
+const brokers = {};
+for (let i = 0; i < brokerNames.length; ++i) {
+    const brokerName = brokerNames[i];
+    const broker = require(config.brokers[brokerName]);
     if (broker) {
         brokers[brokerName] = broker;
     }

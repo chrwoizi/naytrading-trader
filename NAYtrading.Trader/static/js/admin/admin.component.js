@@ -6,7 +6,7 @@ angular.
         templateUrl: '/static/html/admin.template.html',
         controller: ['RunJobService', 'CancelJobService', 'SuspendJobService', 'ContinueJobService', 'GetJobStatusService', 'ReloadConfigService', '$routeParams', '$scope',
             function StatsController(RunJobService, CancelJobService, SuspendJobService, ContinueJobService, GetJobStatusService, ReloadConfigService, $routeParams, $scope) {
-                var self = this;
+                const self = this;
 
                 function handleError(error) {
                     if (typeof (error.data) !== 'undefined' && error.data != null) {

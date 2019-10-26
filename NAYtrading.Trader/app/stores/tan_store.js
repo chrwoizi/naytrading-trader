@@ -1,12 +1,10 @@
-var exports = module.exports = {}
+const config = require('../config/envconfig');
+const broker = require('../clients/broker');
+const Cryptr = require('cryptr');
+const fs = require('fs');
+const crypto = require('crypto');
 
-var config = require('../config/envconfig');
-var broker = require('../clients/broker');
-var Cryptr = require('cryptr');
-var fs = require('fs');
-var crypto = require('crypto');
-
-var tanListsByUser = {};
+const tanListsByUser = {};
 
 exports.setTanList = async function (userName, tans) {
     await exports.validateTanList(tans);
@@ -14,7 +12,7 @@ exports.setTanList = async function (userName, tans) {
 };
 
 exports.getTan = async function (userName, challenge) {
-    var tans = tanListsByUser[userName];
+    const tans = tanListsByUser[userName];
     if (tans) {
         return await broker.getTan(config.broker_name, tans, challenge);
     } else {
@@ -23,7 +21,7 @@ exports.getTan = async function (userName, challenge) {
 };
 
 exports.isTanListSet = function (userName) {
-    var tans = tanListsByUser[userName];
+    const tans = tanListsByUser[userName];
     if (tans) {
         return true;
     } else {
@@ -41,11 +39,11 @@ exports.validateTanList = async function (tans) {
 };
 
 exports.setPassword = async function (userName, password) {
-    var cipher = await exports.getEncryptedTanList(userName);
+    const cipher = await exports.getEncryptedTanList(userName);
     if (!cipher) {
         throw new Error("tan list is not set");
     }
-    var tan = new Cryptr(password).decrypt(cipher);
+    const tan = new Cryptr(password).decrypt(cipher);
     try {
         await exports.validateTanList(tan);
     }
@@ -57,7 +55,7 @@ exports.setPassword = async function (userName, password) {
 }
 
 exports.getEncryptedTanList = async function (user) {
-    var userHash = crypto.createHash('md5').update(user).digest('hex');
+    const userHash = crypto.createHash('md5').update(user).digest('hex');
 
     try {
         return fs.readFileSync(__dirname + "/../../tans/" + userHash);
@@ -68,10 +66,10 @@ exports.getEncryptedTanList = async function (user) {
 }
 
 exports.setEncryptedTanList = async function (user, encryptedTanList) {
-    var userHash = crypto.createHash('md5').update(user).digest('hex');
+    const userHash = crypto.createHash('md5').update(user).digest('hex');
 
     try {
-        var dir = __dirname + "/../../tans";
+        const dir = __dirname + "/../../tans";
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }

@@ -1,15 +1,14 @@
-var exports = module.exports = {}
-var config = require('../config/envconfig');
-var tanStore = require('../stores/tan_store');
-var naytradingStore = require('../stores/naytrading_store');
-var brokerStore = require('../stores/broker_store');
-var browser = require('../clients/browser');
-var broker = require('../clients/broker');
-var naytradingClient = require('../clients/naytrading_client');
-var FatalError = require('../clients/errors').FatalError;
-var CancelOrderFatalError = require('../clients/errors').CancelOrderFatalError;
-var CancelOrderTemporaryError = require('../clients/errors').CancelOrderTemporaryError;
-var TanError = require('../clients/errors').TanError;
+const config = require('../config/envconfig');
+const tanStore = require('../stores/tan_store');
+const naytradingStore = require('../stores/naytrading_store');
+const brokerStore = require('../stores/broker_store');
+const browser = require('../clients/browser');
+const broker = require('../clients/broker');
+const naytradingClient = require('../clients/naytrading_client');
+const FatalError = require('../clients/errors').FatalError;
+const CancelOrderFatalError = require('../clients/errors').CancelOrderFatalError;
+const CancelOrderTemporaryError = require('../clients/errors').CancelOrderTemporaryError;
+const TanError = require('../clients/errors').TanError;
 
 exports.lastRun = new Date();
 exports.isRunning = false;
@@ -55,26 +54,26 @@ async function prepareBuy(driver, suggestion, log, logger, availableFunds) {
         throw new CancelOrderTemporaryError("Insufficient funds to buy anything: " + availableFunds + " EUR");
     }
 
-    var ownedQuantity = await broker.getOwnedQuantity(config.broker_name, driver, suggestion.Isin, suggestion.Wkn);
+    const ownedQuantity = await broker.getOwnedQuantity(config.broker_name, driver, suggestion.Isin, suggestion.Wkn);
     if (ownedQuantity > 0) {
         throw new CancelOrderFatalError("Already owning " + ownedQuantity + " stocks of this company");
     }
 
     logger.log("Available funds: " + availableFunds + " EUR");
 
-    var currentPrice = await broker.getPrice(config.broker_name, driver, suggestion.Isin || suggestion.Wkn, log.Action);
+    const currentPrice = await broker.getPrice(config.broker_name, driver, suggestion.Isin || suggestion.Wkn, log.Action);
     log.Price = currentPrice;
     if (currentPrice > suggestion.Price) {
         throw new CancelOrderTemporaryError("Too expensive to buy at " + currentPrice + ". Expected price to be " + suggestion.Price + " EUR or less");
     }
 
-    var upperLimit = Math.min(availableFunds - config.order_fee, config.max_buy_order_price);
+    const upperLimit = Math.min(availableFunds - config.order_fee, config.max_buy_order_price);
     logger.log("Desired buy order total: " + upperLimit + " EUR (+fee)");
 
     log.Quantity = Math.floor(upperLimit / currentPrice);
     logger.log("Calculated quantity to buy: " + log.Quantity + " at " + currentPrice + " EUR each");
 
-    var total = log.Quantity * currentPrice;
+    const total = log.Quantity * currentPrice;
     logger.log("Calculated buy order total: " + total + " EUR (+fee)");
 
     if (total < config.min_buy_order_price) {
@@ -94,7 +93,7 @@ async function prepareSell(driver, suggestion, log, logger) {
         throw new CancelOrderFatalError("Portfolio does not contain any shares of the instrument");
     }
 
-    var currentPrice = await broker.getPrice(config.broker_name, driver, suggestion.Isin || suggestion.Wkn, log.Action);
+    const currentPrice = await broker.getPrice(config.broker_name, driver, suggestion.Isin || suggestion.Wkn, log.Action);
     if (currentPrice < suggestion.Price) {
         throw new CancelOrderTemporaryError("Too cheap to sell at " + currentPrice + ". Expected price to be " + suggestion.Price + " EUR or more");
     }
@@ -105,7 +104,7 @@ async function prepareSell(driver, suggestion, log, logger) {
 }
 
 async function processSuggestion(driver, user, suggestion, availableFunds, jwt) {
-    var log = {
+    const log = {
         Snapshot_ID: suggestion.ID,
         Status: "Processing",
         Time: new Date()
@@ -117,16 +116,16 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jwt) 
         throw new CancelOrderTemporaryError("Could not set processing status: " + error.message);
     }
 
-    var logger = new Logger(user, suggestion.ID);
+    const logger = new Logger(user, suggestion.ID);
     try {
         logger.log("Processing suggestion " + suggestion.ID + ": " + suggestion.Action + " " + suggestion.InstrumentName + " for " + suggestion.Price);
 
-        var isinOrWkn = suggestion.Isin || suggestion.Wkn;
+        const isinOrWkn = suggestion.Isin || suggestion.Wkn;
         if (!isinOrWkn || !isinOrWkn.length) {
             throw new CancelOrderFatalError("ISIN or WKN not found for suggestion " + suggestion.ID);
         }
 
-        var hasNewerSuggestion = await naytradingClient.hasNewerSuggestion(suggestion.ID, jwt);
+        const hasNewerSuggestion = await naytradingClient.hasNewerSuggestion(suggestion.ID, jwt);
         if (hasNewerSuggestion) {
             throw new CancelOrderFatalError("There is a newer suggestion for the same instrument");
         }
@@ -147,10 +146,10 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jwt) 
 
         await sleep(2000 + Math.random() * 1000);
         logger.log("Getting TAN challenge...");
-        var tanChallenge = await broker.getTanChallenge(config.broker_name, driver, log.Quantity, log.Action);
+        const tanChallenge = await broker.getTanChallenge(config.broker_name, driver, log.Quantity, log.Action);
         logger.log("TAN challenge: " + JSON.stringify(tanChallenge));
 
-        var tan = await tanStore.getTan(user, tanChallenge);
+        const tan = await tanStore.getTan(user, tanChallenge);
 
         await sleep(2000 + Math.random() * 1000);
 
@@ -159,8 +158,9 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jwt) 
         }
 
         logger.log("Getting offer...");
+        let offer;
         try {
-            var offer = await broker.getQuote(config.broker_name, driver, tan);
+            offer = await broker.getQuote(config.broker_name, driver, tan);
             logger.log("Offer: " + offer + " EUR");
         }
         catch (error) {
@@ -246,7 +246,7 @@ async function processSuggestion(driver, user, suggestion, availableFunds, jwt) 
 async function processSuggestions(user) {
     if (naytradingStore.isPasswordSet(user)) {
 
-        var jwt = null;
+        let jwt = null;
         try {
             writeToLog("Logging in at naytrading with user " + user + "...");
             jwt = await naytradingStore.login(async (password) => await naytradingClient.login(user, password), user);
@@ -258,7 +258,7 @@ async function processSuggestions(user) {
             throw e;
         }
 
-        var suggestions = [];
+        let suggestions = [];
         try {
             writeToLog("Loading suggestions from naytrading for user " + user + "...");
             suggestions = await naytradingClient.getOpenSuggestions(jwt);
@@ -278,7 +278,7 @@ async function processSuggestions(user) {
                     if (tanStore.isTanListSet(user)) {
 
                         writeToLog("Starting browser for user " + user + "...");
-                        var driver = await browser.createDriver();
+                        const driver = await browser.createDriver();
                         writeToLog("Browser started.");
 
                         try {
@@ -295,16 +295,17 @@ async function processSuggestions(user) {
                                 throw e;
                             }
 
+                            let suggestion;
                             try {
                                 writeToLog("Getting available funds of user " + user + "...");
-                                var availableFunds = await broker.getAvailableFunds(config.broker_name, driver);
+                                let availableFunds = await broker.getAvailableFunds(config.broker_name, driver);
                                 writeToLog("Abvailable funds: " + availableFunds);
 
                                 writeToLog("Processing " + suggestions.length + " suggestions of user " + user + "...");
-                                for (var suggestion of suggestions) {
-                                    var day = new Date().getDay();
+                                for (suggestion of suggestions) {
+                                    const day = new Date().getDay();
                                     if (day >= config.broker_open_day && day <= config.broker_close_day) {
-                                        var hour = new Date().getHours() + (new Date().getMinutes() / 60.0);
+                                        const hour = new Date().getHours() + (new Date().getMinutes() / 60.0);
                                         if (hour >= config.broker_open_hours && hour < config.broker_close_hours) {
                                             if (exports.cancel) {
                                                 writeToLog("Processing was cancelled by the admin.");
@@ -371,13 +372,13 @@ async function processSuggestions(user) {
 async function runActually() {
     try {
         exports.cancel = false;
-        var users = brokerStore.getUsers();
-        for (var userIndex = 0; userIndex < users.length; ++userIndex) {
-            var user = users[userIndex];
+        const users = brokerStore.getUsers();
+        for (let userIndex = 0; userIndex < users.length; ++userIndex) {
+            const user = users[userIndex];
             try {
-                var day = new Date().getDay();
+                const day = new Date().getDay();
                 if (day >= config.broker_open_day && day <= config.broker_close_day) {
-                    var hour = new Date().getHours() + (new Date().getMinutes() / 60.0);
+                    const hour = new Date().getHours() + (new Date().getMinutes() / 60.0);
                     if (hour >= config.broker_open_hours && hour < config.broker_close_hours) {
                         if (exports.cancel) {
                             writeToLog("Processing was cancelled by the admin.");
@@ -404,9 +405,9 @@ async function runActually() {
         writeToLog("error in main job: " + error.message + "\n" + error.stack);
     }
     exports.lastRun = new Date();
-};
+}
 
-var isRunning = false;
+let isRunning = false;
 async function runWithGuard() {
     if (exports.isSuspended) {
         writeToLog("Job was not started because it is suspended.");

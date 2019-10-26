@@ -1,5 +1,5 @@
-var viewsController = require('../controllers/views_controller.js');
-var config = require('../config/envconfig');
+const viewsController = require('../controllers/views_controller.js');
+const config = require('../config/envconfig');
 
 module.exports = function (app, passport) {
     

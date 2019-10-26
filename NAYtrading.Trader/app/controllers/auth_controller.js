@@ -1,5 +1,3 @@
-var exports = module.exports = {}
-
 function getDefaultArgs(req) {
     return {
         isAuthenticated: req.isAuthenticated(),
@@ -10,7 +8,7 @@ function getDefaultArgs(req) {
 
 exports.signin = function (req, res) {
 
-    var args = getDefaultArgs(req);
+    const args = getDefaultArgs(req);
     args.hasError = res.hasError;
     args.hasMessage = res.hasMessage;
     args.message = res.message;

@@ -1,8 +1,7 @@
-var exports = module.exports = {}
-var config = require('../config/envconfig');
+const config = require('../config/envconfig');
 
 function get_default_args(req, title) {
-    var fullTitle = "N.A.Y.trading Trader";
+    let fullTitle = "N.A.Y.trading Trader";
     if (title) {
         fullTitle = title + " - N.A.Y.trading Trader";
     }
@@ -25,7 +24,7 @@ exports.home = function (req, res) {
 
 exports.about = function (req, res) {
 
-    var args = get_default_args(req, "About");
+    const args = get_default_args(req, "About");
     args.naytrading = config.naytrading_url;
     res.render('about', args);
 
@@ -39,7 +38,7 @@ exports.faq = function (req, res) {
 
 exports.manage = function (req, res) {
 
-    var args = get_default_args(req, "My Account");
+    const args = get_default_args(req, "My Account");
 
     res.render('manage', args);
 }
