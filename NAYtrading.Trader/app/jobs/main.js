@@ -299,7 +299,14 @@ async function processSuggestions(user) {
                             try {
                                 writeToLog("Getting available funds of user " + user + "...");
                                 let availableFunds = await broker.getAvailableFunds(config.broker_name, driver);
-                                writeToLog("Abvailable funds: " + availableFunds);
+                                writeToLog("Available funds: " + availableFunds);
+
+                                if (config.max_available_funds != null && (typeof config.max_available_funds) === 'number') {
+                                    if (config.max_available_funds < availableFunds) {
+                                        availableFunds = config.max_available_funds;
+                                        writeToLog("Limiting available funds due to config: " + availableFunds);
+                                    }
+                                }
 
                                 writeToLog("Processing " + suggestions.length + " suggestions of user " + user + "...");
                                 for (suggestion of suggestions) {
@@ -311,14 +318,14 @@ async function processSuggestions(user) {
                                                 writeToLog("Processing was cancelled by the admin.");
                                                 break;
                                             }
-                                            
+
                                             availableFunds = await processSuggestion(driver, user, suggestion, availableFunds, jwt);
-                                            
+
                                             if (!tanStore.isTanListSet(user)) {
                                                 writeToLog("TAN list was invalidated");
                                                 break;
                                             }
-                                            
+
                                             await sleep(10000);
                                         }
                                         else {
