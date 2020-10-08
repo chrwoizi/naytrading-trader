@@ -308,6 +308,9 @@ async function processSuggestions(user) {
                                 if (config.max_portfolio_value != null && (typeof config.max_portfolio_value) === 'number') {
                                     if (availableFunds > config.max_portfolio_value - portfolioValue) {
                                         availableFunds = config.max_portfolio_value - portfolioValue;
+                                        if (availableFunds < 0) {
+                                            availableFunds = 0;
+                                        }
                                         writeToLog("Limiting available funds due to config: " + availableFunds);
                                     }
                                 }
