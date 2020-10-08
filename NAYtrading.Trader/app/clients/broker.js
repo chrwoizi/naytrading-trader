@@ -29,6 +29,10 @@ exports.getAvailableFunds = async function (brokerName, driver) {
     return await brokers[brokerName].getAvailableFunds(driver);
 };
 
+exports.getPortfolioValue = async function (brokerName, driver) {
+    return await brokers[brokerName].getPortfolioValue(driver);
+};
+
 exports.getOwnedQuantity = async function (brokerName, driver, isin, wkn) {
     return await brokers[brokerName].getOwnedQuantity(driver, isin, wkn);
 }

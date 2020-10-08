@@ -16,6 +16,10 @@ exports.getAvailableFunds = async function (driver) {
     return 100.50;
 };
 
+exports.getPortfolioValue = async function (driver) {
+    return 0;
+};
+
 exports.getOwnedQuantity = async function (driver, isin, wkn) {
     return 5;
 }

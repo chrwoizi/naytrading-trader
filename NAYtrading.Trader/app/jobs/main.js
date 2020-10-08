@@ -301,9 +301,13 @@ async function processSuggestions(user) {
                                 let availableFunds = await broker.getAvailableFunds(config.broker_name, driver);
                                 writeToLog("Available funds: " + availableFunds);
 
-                                if (config.max_available_funds != null && (typeof config.max_available_funds) === 'number') {
-                                    if (config.max_available_funds < availableFunds) {
-                                        availableFunds = config.max_available_funds;
+                                writeToLog("Getting portfolio value of user " + user + "...");
+                                const portfolioValue = await broker.getPortfolioValue(config.broker_name, driver);
+                                writeToLog("Portfolio value: " + portfolioValue);
+
+                                if (config.max_portfolio_value != null && (typeof config.max_portfolio_value) === 'number') {
+                                    if (availableFunds > config.max_portfolio_value - portfolioValue) {
+                                        availableFunds = config.max_portfolio_value - portfolioValue;
                                         writeToLog("Limiting available funds due to config: " + availableFunds);
                                     }
                                 }
