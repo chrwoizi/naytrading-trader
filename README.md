@@ -1,7 +1,8 @@
-# NAYtrading.Trader #
+# NAYtrading.Trader
+
 This is the broker connector of [N.A.Y.trading](https://github.com/chrwoizi/naytrading).
 
-## :telephone: Forwarding the simulated trades to a broker ##
+## :telephone: Forwarding the simulated trades to a broker
 
 This web application can be used to actually buy or sell the stocks based on the recorded user decisions.
 
@@ -49,8 +50,9 @@ naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader/app/config$ cp conf
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader/app/config$ vi config.json
 [set production.admin_user to your email address]
 [set production.proxy if you access the web through a proxy]
+[set production.chrome_binary to your chrome executable, e.g. /usr/lib/chromium-browser/chromium-browser]
 [set production.chrome_driver to your chrome driver executable, e.g. /usr/lib/chromium-browser/chromedriver]
-[add your custom stock data provider envconfig to the include array, e.g. "../../../NAYtrading.Trader.Plugin/config/envconfig"]
+[add your custom broker envconfig to the include array, e.g. "../../../NAYtrading.Trader.Plugin/config/envconfig"]
 :wq
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader/app/config$ cd ../..
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ chmod +x production.sh
@@ -93,4 +95,5 @@ naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ killall production
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ killall node
 naytrading-trader@host:~/naytrading-trader/NAYtrading.Trader$ ./production.sh &
 ```
+
 </details><p></p>
