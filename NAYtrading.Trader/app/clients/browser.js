@@ -26,10 +26,13 @@ exports.createDriver = async function () {
     const width = 1920;
     const height = 1080;
 
-    const service = new chrome.ServiceBuilder(config.chrome_driver).build();
+    const service = new chrome.ServiceBuilder(config.chrome_driver && config.chrome_driver.length > 0 ? config.chrome_driver : undefined).build();
     chrome.setDefaultService(service);
 
     let options = new chrome.Options();
+    if (config.chrome_binary && config.chrome_binary.length > 0) {
+        options = options.setChromeBinaryPath(config.chrome_binary);
+    }
     if (config.chrome_headless) {
         options = options.headless();
     }
