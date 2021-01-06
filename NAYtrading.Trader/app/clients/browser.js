@@ -78,6 +78,28 @@ exports.waitForId = async function (driver, id, timeoutSeconds, predicate) {
     return null;
 };
 
+exports.waitForCss = async function (driver, css, timeoutSeconds, predicate) {
+
+    for (let i = 0; i < timeoutSeconds * 10; i++) {
+        await sleep(100);
+
+        try {
+            const elements = await driver.findElements(webdriver.By.css(css));
+            if (elements && elements.length) {
+                for (const element of elements) {
+                    if (await predicate(element)) {
+                        return element;
+                    }
+                }
+            }
+        }
+        catch (e) {
+        }
+    }
+
+    return null;
+};
+
 exports.waitForXpath = async function (driver, xpath, timeoutSeconds, predicate) {
 
     for (let i = 0; i < timeoutSeconds * 10; i++) {
