@@ -40,7 +40,7 @@
         "querystring": "^0.2.0",
         "selenium-webdriver": "^4.0.0-alpha.8",
         "startbootstrap-landing-page": "^4.1.1",
-        "xmldom": "^0.1.27",
+        "xmldom": "^0.5.0",
         "xmlserializer": "^0.6.1",
         "xpath": "0.0.27"
     }
