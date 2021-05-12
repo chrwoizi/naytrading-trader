@@ -17,7 +17,7 @@
         "bcrypt-nodejs": "0.0.3",
         "body-parser": "^1.18.2",
         "bootstrap": "^4.5.3",
-        "chart.js": "^2.7.2",
+        "chart.js": "^2.9.4",
         "cookie-session": "^1.3.3",
         "cryptr": "^4.0.0",
         "dateformat": "^3.0.3",
