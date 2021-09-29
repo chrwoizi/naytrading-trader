@@ -39,6 +39,7 @@
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "querystring": "^0.2.1",
+        "request": "^2.88.2",
         "selenium-webdriver": "^4.0.0-rc-1",
         "startbootstrap-landing-page": "^6.0.3",
         "xmlserializer": "^0.6.1",
