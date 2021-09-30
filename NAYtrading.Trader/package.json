@@ -26,6 +26,7 @@
         "express": "^4.17.1",
         "express-handlebars": "^3.1.0",
         "express-session": "^1.17.2",
+        "font-awesome": "^4.7.0",
         "glyphicons-only-bootstrap": "^1.0.1",
         "gulp": "^4.0.2",
         "gulp-sass": "^5.0.0",
@@ -41,7 +42,7 @@
         "querystring": "^0.2.1",
         "request": "^2.88.2",
         "selenium-webdriver": "^4.0.0-rc-1",
-        "startbootstrap-landing-page": "^6.0.3",
+        "simple-line-icons": "^2.5.5",
         "xmlserializer": "^0.6.1",
         "xpath": "0.0.27"
     }

@@ -35,8 +35,8 @@ textarea {
 }
 
 .list-button {
-    font-size: 0.5em; 
-    padding: 0.5em 0.5em 0.2em 0.5em; 
+    font-size: 0.5em;
+    padding: 0.5em 0.5em 0.2em 0.5em;
     margin-top: -0.5em;
 }
 
@@ -62,11 +62,10 @@ dt {
     margin-left: 0.5em;
 }
 
-
 header.masthead {
     background: url("/static/images/pattern.jpg") repeat center center;
 }
-  
+
 .call-to-action {
     background: url("/static/images/pattern.jpg") repeat center center;
 }
@@ -80,35 +79,35 @@ header.masthead {
     margin-left: auto;
     margin-right: auto;
     display: block;
- }
+}
 
- .spinner {
+.spinner {
     display: block;
     min-height: 10em;
- }
+}
 
- header.masthead .overlay {
-     opacity: 0.5;
- }
+header.masthead .overlay {
+    opacity: 0.5;
+}
 
- .call-to-action .overlay {
-     opacity: 0.5;
- }
+.call-to-action .overlay {
+    opacity: 0.5;
+}
 
- .tanlist-cell {
-     width: 4em;
- }
+.tanlist-cell {
+    width: 4em;
+}
 
- .red {
-     color: red;
- }
+.red {
+    color: red;
+}
 
- .green {
-     color: green;
- }
+.green {
+    color: green;
+}
 
- .job-log {
-     width: 100%;
-     height: 500px;
-     max-width: none;
- }
+.job-log {
+    width: 100%;
+    height: 500px;
+    max-width: none;
+}

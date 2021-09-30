@@ -44,7 +44,9 @@ const mainJob = require('./app/jobs/main');
         app.use('/angular-spinner', express.static('./node_modules/angular-spinner/dist/'));
         app.use('/bootstrap', express.static('./node_modules/bootstrap/dist/'));
         app.use('/glyphicons-only-bootstrap', express.static('./node_modules/glyphicons-only-bootstrap/'));
-        app.use('/startbootstrap-landing-page', express.static('./node_modules/startbootstrap-landing-page/'));
+        app.use('/bootstrap', express.static('./node_modules/bootstrap/dist/'));
+        app.use('/font-awesome', express.static('./node_modules/font-awesome/'));
+        app.use('/simple-line-icons', express.static('./node_modules/simple-line-icons/'));
         app.use('/chart.js', express.static('./node_modules/chart.js/dist/'));
         app.use('/jquery', express.static('./node_modules/jquery/dist/'));
         app.use('/ng-infinite-scroll', express.static('./node_modules/ng-infinite-scroll/build/'));
@@ -84,7 +86,7 @@ const mainJob = require('./app/jobs/main');
                 console.log('HTTPS Server running on port ' + config.port_https);
             });
         }
-            
+
         if (config.job_main_enabled) {
             setTimeout(function () {
                 new Promise(function (resolve, reject) { mainJob.run(); });
