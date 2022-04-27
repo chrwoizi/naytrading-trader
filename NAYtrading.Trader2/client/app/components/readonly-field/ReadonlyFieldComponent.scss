@@ -1,0 +1,10 @@
+@import "assets/styles/variable.scss";
+
+mat-label {
+  color: mat-color($foreground, secondary-text, 0.7);
+  font-size: 1rem;
+}
+
+input {
+  color: mat-color($foreground, secondary-text, 1) !important;
+}

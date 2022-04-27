@@ -1,0 +1,55 @@
+<div class="content" fxLayout="column" fxLayoutAlign="center center">
+  <div class="text-center mt-10 mb-10">
+    <h1>Welcome back!</h1>
+    <p>Please sign in with your existing account.</p>
+  </div>
+
+  <div [formGroup]="form" class="p-15" fxLayout="column" fxLayoutGap="16px">
+    <div fxFlex="auto" fxLayout="column">
+      <mat-form-field fxFlex="grow">
+        <mat-label>Email address</mat-label>
+        <input
+          formControlName="email"
+          matInput
+          required
+          (keydown)="onEnterKey($event)"
+        />
+        <mat-error *ngIf="form.get('email').hasError('required')"
+          >Please enter your email address</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field fxFlex="grow">
+        <mat-label>Password</mat-label>
+        <input
+          [type]="inputType"
+          formControlName="password"
+          matInput
+          required
+          (keydown)="onEnterKey($event)"
+        />
+        <mat-error *ngIf="form.get('password').hasError('required')"
+          >Please enter your password</mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <button (click)="send()" color="primary" mat-raised-button type="button">
+      SIGN IN
+    </button>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <a
+        [routerLink]="['/forgot-password/' + form.get('email').value]"
+        class="caption"
+        >Forgot password?</a
+      >
+    </div>
+
+    <p class="text-center">
+      You don't have an account yet?<br />
+      <button mat-raised-button color="primary" [routerLink]="['/register']">
+        SIGN UP
+      </button>
+    </p>
+  </div>
+</div>

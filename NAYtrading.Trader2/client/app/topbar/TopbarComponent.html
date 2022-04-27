@@ -1,0 +1,45 @@
+<mat-toolbar class="topbar telative" fxLayout="row" fxLayoutGap="1em">
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/">
+      {{ title }}
+    </a>
+  </div>
+  <button
+    *ngIf="sessionService.isLoggedIn()"
+    mat-raised-button
+    color="primary"
+    routerLink="/landing"
+  >
+    ABOUT
+  </button>
+
+  <button
+    *ngIf="sessionService.isLoggedIn()"
+    mat-raised-button
+    color="primary"
+    routerLink="/main"
+  >
+    MAIN
+  </button>
+
+  <span fxFlex></span>
+
+  <div *ngIf="sessionService.isLoggedIn()">
+    <button [matMenuTriggerFor]="profile" mat-icon-button class="mr-5">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <mat-menu #profile="matMenu">
+      <div class="username p-10">{{ sessionService.getUsername() }}</div>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon> Sign Out
+      </button>
+    </mat-menu>
+  </div>
+
+  <div *ngIf="!sessionService.isLoggedIn()" fxLayout="row" fxLayoutGap="1em">
+    <button mat-raised-button color="primary" routerLink="/login">
+      LOGIN
+    </button>
+  </div>
+</mat-toolbar>

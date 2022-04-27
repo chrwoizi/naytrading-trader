@@ -1,0 +1,19 @@
+mat-card.mat-card {
+  background: $inverse;
+}
+
+.image-toggle-button .mat-button-toggle-button {
+  width: 100%;
+  height: 100%;
+}
+
+.image-toggle-button span.mat-button-toggle-label-content {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.enable-pointer {
+  pointer-events: auto;
+}

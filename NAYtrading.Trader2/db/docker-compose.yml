@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  backend-db:
+    image: mongo:latest
+    container_name: ${COMPOSE_PROJECT_NAME}-backend-db
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$BACKEND_DB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$BACKEND_DB_PASSWORD
+      - MONGO_INITDB_DATABASE=$BACKEND_DB
+      - MONGO_INITDB_USERNAME=$BACKEND_DB_USERNAME
+      - MONGO_INITDB_PASSWORD=$BACKEND_DB_PASSWORD
+    volumes:
+      - backend-dbdata:/data/db
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
+    ports:
+      - 27020:27017
+    networks:
+      - backend-db
+
+networks:
+  backend-db:
+
+volumes:
+  backend-dbdata:

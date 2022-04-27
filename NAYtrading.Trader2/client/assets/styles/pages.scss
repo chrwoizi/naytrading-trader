@@ -1,0 +1,52 @@
+/*
+Template Name: Material Pro Admin
+Author: Wrappixel
+Email: niravjoshi87@gmail.com
+File: scss
+*/
+
+/*============================================================== 
+ For all pages 
+ ============================================================== */
+
+/*******************
+ Main container
+*******************/
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.mat-drawer-container {
+  background: $bodycolor;
+}
+
+html .page-wrapper {
+  min-height: calc(100vh - 64px);
+  .page-content {
+    padding: 15px;
+  }
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.button-row button {
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.pl-5 {
+  padding-left: 5px;
+}
+.pr-5 {
+  padding-right: 5px;
+}

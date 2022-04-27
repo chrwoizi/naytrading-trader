@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "path": "server"
+    },
+    {
+      "path": "client"
+    },
+    {
+      "path": "caprover"
+    },
+    {
+      "path": "db"
+    }
+  ],
+  "settings": {},
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [],
+    "compounds": [
+      {
+        "name": "ALL",
+        "configurations": [
+          {
+            "name": "server",
+            "folder": "server"
+          },
+          {
+            "name": "client",
+            "folder": "client"
+          },
+          {
+            "name": "chrome",
+            "folder": "client"
+          }
+        ]
+      }
+    ]
+  }
+}
