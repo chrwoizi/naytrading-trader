@@ -12,6 +12,8 @@ import { AppRoutingModule } from './AppRoutingModule';
 import { AuthModule } from './auth/AuthModule';
 import { SpinnerModule } from './components/spinner/SpinnerModule';
 import { DemoMaterialModule } from './DemoMaterialModule';
+import { FaqComponent } from './faq/FaqComponent';
+import { FooterComponent } from './footer/FooterComponent';
 import { ErrorInterceptor } from './helpers/ErrorInterceptor';
 import { JwtInterceptor } from './helpers/JwtInterceptor';
 import { LandingComponent } from './landing/LandingComponent';
@@ -23,7 +25,9 @@ import { TopbarComponent } from './topbar/TopbarComponent';
     AppComponent,
     TopbarComponent,
     MainComponent,
-    LandingComponent
+    LandingComponent,
+    FaqComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

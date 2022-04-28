@@ -1,3 +1,21 @@
-<div class="main-root page-wrapper">
-  landing
+<div class="page-wrapper" fxLayout="column" fxLayoutAlign="center center">
+  <h1>
+    N.A.Y.trading Trader
+  </h1>
+  <small class="mb-40"
+    >A companion app for <a href="{{naytrading}}">N.A.Y.trading</a></small
+  >
+  <div fxLayout="column">
+    <a
+      *ngIf="!sessionService.isLoggedIn()"
+      mat-raised-button
+      color="primary"
+      href="{{naytrading}}/register"
+    >
+      SIGN UP
+    </a>
+    <a class="mt-10" *ngIf="!sessionService.isLoggedIn()" routerLink="/login">
+      I have an account
+    </a>
+  </div>
 </div>

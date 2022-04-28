@@ -4,6 +4,7 @@ import { MainComponent } from './main/MainComponent';
 import { AuthGuard } from './auth/AuthGuard';
 import { NotAuthGuard } from './auth/NotAuthGuard';
 import { LandingComponent } from './landing/LandingComponent';
+import { FaqComponent } from './faq/FaqComponent';
 
 const routes: Routes = [
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { path: 'landing', component: LandingComponent },
+  { path: 'faq', component: FaqComponent },
   { path: 'main', component: MainComponent, canActivate: [AuthGuard] },
   {
     path: 'login',

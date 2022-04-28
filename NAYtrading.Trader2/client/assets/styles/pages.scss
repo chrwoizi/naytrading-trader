@@ -24,6 +24,11 @@ File: scss
   right: 0;
 }
 
+.page-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
 .mat-drawer-container {
   background: $bodycolor;
 }

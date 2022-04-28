@@ -7,6 +7,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { environment } from 'environments/environment';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SessionService } from '../SessionService';
@@ -18,6 +19,8 @@ import { SessionService } from '../SessionService';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
+  naytrading = environment.naytrading;
+
   form: FormGroup;
 
   inputType = 'password';

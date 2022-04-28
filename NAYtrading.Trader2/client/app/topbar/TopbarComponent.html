@@ -1,22 +1,17 @@
-<mat-toolbar class="topbar telative" fxLayout="row" fxLayoutGap="1em">
+<mat-toolbar class="topbar relative" fxLayout="row" fxLayoutGap="1em">
   <div class="navbar-header">
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/landing">
       {{ title }}
     </a>
   </div>
-  <button
-    *ngIf="sessionService.isLoggedIn()"
-    mat-raised-button
-    color="primary"
-    routerLink="/landing"
-  >
-    ABOUT
+
+  <button mat-raised-button routerLink="/faq">
+    FAQ
   </button>
 
   <button
     *ngIf="sessionService.isLoggedIn()"
     mat-raised-button
-    color="primary"
     routerLink="/main"
   >
     MAIN
