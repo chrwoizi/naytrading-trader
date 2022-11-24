@@ -1,3 +1,4 @@
 https://github.com/wrappixel/material-pro-angular-lite
 https://www.wrappixel.com/demos/free-admin-templates/material-pro-lite/html/pages-profile.html
+https://demos.wrappixel.com/premium-admin-templates/angular/material-angular/dark/pages/invoice
 https://dev.materialdesignicons.com/icons
